@@ -33,6 +33,7 @@ parser.add_argument("-r", "--ref", help="Genome .fa file. Must also have ", acti
 parser.add_argument("--ignoreConflicts", help="Don't fail if two annotations give conflicting information about the same site", action='store_true')
 parser.add_argument("--scaffoldLookup", help="Table of scaffold names (col1:reference and col2:annotation) if they differ", action = "store")
 parser.add_argument("--useAnnotationScaffoldNames", help="Use the scaffold names in the annotation rather than the reference", action = "store_true")
+parser.add_argument("--RunQuietly", help="Doesn't print each sequence being analysed ", action='store_true')
 
 args = parser.parse_args()
 
@@ -97,7 +98,8 @@ for scaffold in scaffolds:
     
     for mRNA in mRNAs:
         region = scaffold + ":" + str(geneData[scaffold][mRNA]["start"]) + "-" + str(geneData[scaffold][mRNA]["end"])
-        sys.stderr.write("    Analysing mRNA {}: {}, {} exons\n".format(mRNA, region, geneData[scaffold][mRNA]["exons"]))
+        if not args.RunQuietly:
+            sys.stderr.write("    Analysing mRNA {}: {}, {} exons\n".format(mRNA, region, geneData[scaffold][mRNA]["exons"]))
         
         siteAlleles = {}
         
